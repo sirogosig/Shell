@@ -111,7 +111,7 @@ bool shell_init(shell_reader_t reader, shell_writer_t writer, char * msg)
 		shell_println((const char *) SHELL_VERSION_STRING);
 #endif
 	}
-	shell_prompt();
+	//shell_prompt();
 	return true;
 }
 
@@ -281,8 +281,7 @@ void shell_print_error(int error, const char * field)
 #endif
 }
 
-void shell_task()
-{
+void shell_task(){
 	// Number of characters written to buffer (this should be static var)
 	static uint16_t count = 0;
 	uint8_t i = 0;
@@ -300,26 +299,25 @@ void shell_task()
 			obhandle->buffertimer = millis();
 			if (obhandle->shell_bwriter != 0)
 				obhandle->shell_bwriter(obhandle->outbuffer, obhandle->buffercount);
-			// and clear counter
+			// and f counter
 			obhandle->buffercount = 0;
 		}
 	}
 
 	// Process each one of the received characters
 	if (shell_reader(&rxchar)) {
-
+		//shell_println("Characters received.");
 		switch (rxchar) {
 		case SHELL_ASCII_ESC: // For VT100 escape sequences
 			// Process escape sequences: maybe later
 			break;
 
 		case SHELL_ASCII_HT:
-			shell_putc(SHELL_ASCII_BEL);
+			//shell_putc(SHELL_ASCII_BEL);
 			break;
 
 		case SHELL_ASCII_CR: // Enter key pressed
 			shellbuf[count] = '\0';
-			shell_println("");
 			cc = true;
 			break;
 
@@ -327,17 +325,18 @@ void shell_task()
 		case SHELL_ASCII_BS: // Backspace pressed
 			if (count > 0) {
 				count--;
-				shell_putc(SHELL_ASCII_BS);
-				shell_putc(SHELL_ASCII_SP);
-				shell_putc(SHELL_ASCII_BS);
+				//shell_putc(SHELL_ASCII_BS);
+				//shell_putc(SHELL_ASCII_SP);
+				//shell_putc(SHELL_ASCII_BS);
 			} else
-				shell_putc(SHELL_ASCII_BEL);
+				//shell_putc(SHELL_ASCII_BEL);
 			break;
 		default:
 			// Process printable characters, but ignore other ASCII chars
 			if (count < (CONFIG_SHELL_MAX_INPUT - 1) && rxchar >= 0x20 && rxchar < 0x7F) {
+				//shell_println("Processing printable characters.");
 				shellbuf[count] = rxchar;
-				shell_putc(rxchar);
+				//shell_putc(rxchar);
 				count++;
 			}
 		}
@@ -357,6 +356,7 @@ void shell_task()
 				if (!strcmp(argv_list[0], list[i].shell_command_string))
 #endif  
 				{
+					//shell_println("Command found.");
 					// Run the appropriate function
 					retval = list[i].shell_program(argc, argv_list);
 					cc = false;
@@ -372,8 +372,8 @@ void shell_task()
 			}
 			count = 0;
 			cc = false;
-			shell_println("");
-			shell_prompt();
+			//shell_println("Done");
+			//shell_prompt();
 		}
 	}
 }
