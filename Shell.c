@@ -83,7 +83,7 @@ static void shell_process_escape(int argc, char ** argv);
 /**
  *  Prints the command shell prompt
  */
-static void shell_prompt();
+//static void shell_prompt();
 
 /*-------------------------------------------------------------*
  *		Public API Implementation			*
@@ -286,7 +286,7 @@ void shell_task(){
 	static uint16_t count = 0;
 	uint8_t i = 0;
 	bool cc = 0;
-	int retval = 0;
+	//int retval = 0;
 	int argc = 0;
 	char rxchar = 0;
 
@@ -358,7 +358,7 @@ void shell_task(){
 				{
 					//shell_println("Command found.");
 					// Run the appropriate function
-					retval = list[i].shell_program(argc, argv_list);
+					//retval = list[i].shell_program(argc, argv_list);
 					cc = false;
 				}
 			}
@@ -499,14 +499,14 @@ static void shell_process_escape(int argc, char ** argv)
 	}
 }
 
-static void shell_prompt()
-{
-#ifdef ARDUINO
-	shell_print_pm(PSTR("device>"));
-#else
-	shell_print((const char *) "device>");
-#endif
-}
+// static void shell_prompt()
+// {
+// #ifdef ARDUINO
+// 	shell_print_pm(PSTR("device>"));
+// #else
+// 	shell_print((const char *) "device>");
+// #endif
+// }
 
 /*-------------------------------------------------------------*
  *		Shell formatted print support			*
